@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Your App Name</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4bb543;
+            --error-color: #ff3333;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--dark-color);
+        }
+        
+        .auth-container {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-container:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .auth-header {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .auth-header h2 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+        
+        .auth-body {
+            padding: 2rem;
+        }
+        
+        .form-control {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 15px;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .floating-label {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .floating-label label {
+            position: absolute;
+            top: 12px;
+            left: 15px;
+            color: #6c757d;
+            transition: all 0.3s;
+            pointer-events: none;
+            background: white;
+            padding: 0 5px;
+        }
+        
+        .floating-label input:focus + label,
+        .floating-label input:not(:placeholder-shown) + label,
+        .floating-label select:focus + label,
+        .floating-label select:not([value=""]):valid + label {
+            top: -10px;
+            left: 10px;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6c757d;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background-color: #e0e0e0;
+            margin-top: 0.5rem;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            width: 0%;
+            background-color: var(--success-color);
+            transition: width 0.3s;
+        }
+        
+        .password-strength {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            text-align: right;
+            color: #6c757d;
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+        
+        .step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .step.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .step.completed {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            width: 60px;
+            height: 2px;
+            background-color: #e0e0e0;
+            transform: translateY(-50%);
+        }
+        
+        .step:last-child::after {
+            display: none;
+        }
+        
+        .step-text {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 0.5rem;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container animate__animated animate__fadeIn">
+        <div class="auth-header">
+            <h2>Create Your Account</h2>
+            <p>Join us to get started</p>
+        </div>
+        
+        <div class="auth-body">
+            <% if (error) { %>
+                <div class="alert alert-danger animate__animated animate__shakeX" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i><%= error %>
+                </div>
+            <% } %>
+            
+            <form action="/register" method="POST" id="registerForm">
+                <!-- Step Indicator -->
+                <div class="step-indicator">
+                    <div class="step active" id="step1">
+                        1
+                        <span class="step-text">Personal Info</span>
+                    </div>
+                    <div class="step" id="step2">
+                        2
+                        <span class="step-text">Account Details</span>
+                    </div>
+                    <div class="step" id="step3">
+                        3
+                        <span class="step-text">Preferences</span>
+                    </div>
+                </div>
+                
+                <!-- Step 1: Personal Information -->
+                <div class="step-content" id="step1-content">
+                    <div class="floating-label mb-4">
+                        <input type="text" class="form-control" id="name" name="name" placeholder=" " required>
+                        <label for="name">Full Name</label>
+                    </div>
+                    
+                    <div class="floating-label mb-4">
+                        <input type="email" class="form-control" id="email" name="email" placeholder=" " required>
+                        <label for="email">Email Address</label>
+                    </div>
+                    
+                    <div class="floating-label mb-4">
+                        <input type="tel" class="form-control" id="phone" name="phone" placeholder=" ">
+                        <label for="phone">Phone Number (Optional)</label>
+                    </div>
+                    
+                    <div class="floating-label mb-4">
+                        <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" placeholder=" ">
+                        <label for="dateOfBirth">Date of Birth</label>
+                    </div>
+                    
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-primary" onclick="nextStep(1, 2)">Next <i class="fas fa-arrow-right ms-2"></i></button>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Account Details -->
+                <div class="step-content" id="step2-content" style="display: none;">
+                    <div class="floating-label mb-4 position-relative">
+                        <input type="password" class="form-control" id="password" name="password" placeholder=" " required minlength="8">
+                        <label for="password">Password</label>
+                        <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+                        <div class="progress-bar">
+                            <div class="progress" id="passwordStrength"></div>
+                        </div>
+                        <div class="password-strength" id="passwordStrengthText">Weak</div>
+                    </div>
+                    
+                    <div class="floating-label mb-4 position-relative">
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder=" " required>
+                        <label for="confirmPassword">Confirm Password</label>
+                        <i class="fas fa-eye password-toggle" id="toggleConfirmPassword"></i>
+                        <div id="passwordMatch" class="error-message"></div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Account Type</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="accountType" id="personalAccount" value="personal" checked>
+                            <label class="form-check-label" for="personalAccount">Personal Account</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="accountType" id="businessAccount" value="business">
+                            <label class="form-check-label" for="businessAccount">Business Account</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="accountType" id="premiumAccount" value="premium">
+                            <label class="form-check-label" for="premiumAccount">Premium Account</label>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary" onclick="prevStep(2, 1)"><i class="fas fa-arrow-left me-2"></i> Back</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(2, 3)">Next <i class="fas fa-arrow-right ms-2"></i></button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Preferences -->
+                <div class="step-content" id="step3-content" style="display: none;">
+                    <div class="mb-4">
+                        <label class="form-label">Theme Preference</label>
+                        <select class="form-select" name="preferences[theme]">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                            <option value="system">System Default</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Notification Preferences</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="preferences[notifications][email]" id="emailNotifications" checked>
+                            <label class="form-check-label" for="emailNotifications">Email Notifications</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="preferences[notifications][sms]" id="smsNotifications">
+                            <label class="form-check-label" for="smsNotifications">SMS Notifications</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="preferences[notifications][push]" id="pushNotifications" checked>
+                            <label class="form-check-label" for="pushNotifications">Push Notifications</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="termsAgreement" name="termsAgreement" required>
+                        <label class="form-check-label" for="termsAgreement">I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a></label>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary" onclick="prevStep(3, 2)"><i class="fas fa-arrow-left me-2"></i> Back</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-user-plus me-2"></i> Create Account
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div class="auth-footer">
+            Already have an account? <a href="/login">Sign in</a>
+        </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Terms and Conditions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Your terms and conditions content here -->
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
+                    <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <!-- Add more content as needed -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">I Understand</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Password toggle functionality
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const password = document.getElementById('password');
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+        
+        document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+            const confirmPassword = document.getElementById('confirmPassword');
+            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPassword.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+        
+        // Password strength checker
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const strengthBar = document.getElementById('passwordStrength');
+            const strengthText = document.getElementById('passwordStrengthText');
+            
+            // Reset
+            strengthBar.style.width = '0%';
+            strengthBar.style.backgroundColor = '#ff3333';
+            strengthText.textContent = 'Weak';
+            strengthText.style.color = '#ff3333';
+            
+            if (password.length === 0) return;
+            
+            // Check password strength
+            let strength = 0;
+            
+            // Length
+            if (password.length >= 8) strength += 25;
+            if (password.length >= 12) strength += 15;
+            
+            // Contains numbers
+            if (/\d/.test(password)) strength += 20;
+            
+            // Contains lowercase and uppercase
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 20;
+            
+            // Contains special characters
+            if (/[^a-zA-Z0-9]/.test(password)) strength += 20;
+            
+            // Update strength bar
+            strengthBar.style.width = strength + '%';
+            
+            // Update color and text based on strength
+            if (strength > 70) {
+                strengthBar.style.backgroundColor = '#4bb543';
+                strengthText.textContent = 'Strong';
+                strengthText.style.color = '#4bb543';
+            } else if (strength > 40) {
+                strengthBar.style.backgroundColor = '#ffa500';
+                strengthText.textContent = 'Medium';
+                strengthText.style.color = '#ffa500';
+            }
+        });
+        
+        // Password match checker
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            const matchMessage = document.getElementById('passwordMatch');
+            
+            if (confirmPassword.length === 0) {
+                matchMessage.textContent = '';
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                matchMessage.textContent = 'Passwords do not match';
+            } else {
+                matchMessage.textContent = 'Passwords match!';
+                matchMessage.style.color = '#4bb543';
+            }
+        });
+        
+        // Multi-step form navigation
+        function nextStep(current, next) {
+            // Validate current step before proceeding
+            let isValid = true;
+            const currentStep = document.getElementById(`step${current}-content`);
+            const inputs = currentStep.querySelectorAll('input[required], select[required]');
+            
+            inputs.forEach(input => {
+                if (!input.value) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+            
+            // Special validation for password match
+            if (current === 2) {
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (password !== confirmPassword) {
+                    document.getElementById('confirmPassword').classList.add('is-invalid');
+                    isValid = false;
+                }
+            }
+            
+            if (!isValid) {
+                document.getElementById(`step${current}-content`).classList.add('animate__animated', 'animate__shakeX');
+                setTimeout(() => {
+                    document.getElementById(`step${current}-content`).classList.remove('animate__animated', 'animate__shakeX');
+                }, 1000);
+                return;
+            }
+            
+            // Proceed to next step
+            document.getElementById(`step${current}-content`).style.display = 'none';
+            document.getElementById(`step${next}-content`).style.display = 'block';
+            
+            // Update step indicator
+            document.getElementById(`step${current}`).classList.remove('active');
+            document.getElementById(`step${current}`).classList.add('completed');
+            document.getElementById(`step${next}`).classList.add('active');
+        }
+        
+        function prevStep(current, prev) {
+            document.getElementById(`step${current}-content`).style.display = 'none';
+            document.getElementById(`step${prev}-content`).style.display = 'block';
+            
+            // Update step indicator
+            document.getElementById(`step${current}`).classList.remove('active');
+            document.getElementById(`step${prev}`).classList.add('active');
+        }
+        
+        // Form submission validation
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            if (!document.getElementById('termsAgreement').checked) {
+                event.preventDefault();
+                document.getElementById('termsAgreement').classList.add('is-invalid');
+                document.getElementById('step3-content').classList.add('animate__animated', 'animate__shakeX');
+                setTimeout(() => {
+                    document.getElementById('step3-content').classList.remove('animate__animated', 'animate__shakeX');
+                }, 1000);
+            }
+        });
+        
+        // Add focus effects
+        const inputs = document.querySelectorAll('.form-control, .form-select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                const label = this.parentElement.querySelector('label');
+                if (label) {
+                    label.style.color = '#4361ee';
+                }
+            });
+            
+            input.addEventListener('blur', function() {
+                const label = this.parentElement.querySelector('label');
+                if (label) {
+                    label.style.color = '#6c757d';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

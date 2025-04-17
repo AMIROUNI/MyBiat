@@ -1,18 +1,18 @@
-# Base image
-FROM node:18
+# Base image sécurisée
+FROM node:18.20.2-slim
 
-# Create app directory
+# Créer le répertoire de travail
 WORKDIR /usr/src/app
 
-# Install app dependencies
+# Copier les dépendances et installer
 COPY package*.json ./
 RUN npm install
 
-# Copy app source
+# Copier tout le code source
 COPY . .
 
-# Expose port
+# Exposer le port
 EXPOSE 3000
 
-# Start the app
+# Lancer l'application
 CMD ["npm", "run", "dev"]

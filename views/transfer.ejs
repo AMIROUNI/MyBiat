@@ -1,0 +1,7 @@
+<h1>Transfer Money</h1>
+<form action="/transfer" method="POST">
+  <input type="hidden" name="senderId" value="<%= userId %>" />
+  <input name="receiverEmail" type="email" placeholder="Receiver Email" required />
+  <input name="amount" type="number" placeholder="Amount" required />
+  <button type="submit">Send</button>
+</form>

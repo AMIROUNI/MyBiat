@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to MyBiat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #005baa;
+            --secondary-color: #003366;
+            --accent-color: #00a8e8;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #212529;
+        }
+        
+        .loading-container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .logo {
+            height: 80px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .loading-spinner {
+            width: 4rem;
+            height: 4rem;
+            border: 5px solid rgba(0, 91, 170, 0.1);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .feature-card {
+            border: none;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: left;
+            transition: all 0.3s;
+            background-color: rgba(0, 91, 170, 0.05);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .progress {
+            height: 8px;
+            margin: 2rem 0;
+        }
+        
+        .progress-bar {
+            background-color: var(--primary-color);
+            transition: width 1s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container">
+        <img src="/logo.png" alt="MyBiat Logo" class="logo">
+        <h2>Welcome to MyBiat Digital Banking</h2>
+        <p class="text-muted">Your financial freedom starts here</p>
+        
+        <div class="loading-spinner"></div>
+        
+        <div class="progress">
+            <div class="progress-bar" id="loadingBar" role="progressbar" style="width: 0%"></div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h4>Instant Transfers</h4>
+                    <p>Send money to anyone, anytime with just a few clicks. No fees, no delays.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Bank-Level Security</h4>
+                    <p>Your money is protected with advanced encryption and fraud monitoring.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>Financial Insights</h4>
+                    <p>Track your spending and get personalized recommendations to save more.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h4>Mobile Banking</h4>
+                    <p>Manage your accounts from anywhere with our easy-to-use mobile app.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <p class="text-muted">Preparing your banking experience...</p>
+        </div>
+    </div>
+
+    <script>
+        // Animate progress bar
+        const loadingBar = document.getElementById('loadingBar');
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.random() * 10;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                // Redirect when loading completes
+                setTimeout(() => {
+                    window.location.href = '/dashboard';
+                }, 500);
+            }
+            loadingBar.style.width = `${progress}%`;
+        }, 300);
+        
+        // If loading takes too long, allow manual redirect
+        setTimeout(() => {
+            document.querySelector('.text-muted').textContent = 'Taking longer than expected? ';
+            const redirectLink = document.createElement('a');
+            redirectLink.href = '/dashboard';
+            redirectLink.textContent = 'Go to dashboard now';
+            redirectLink.className = 'text-primary';
+            document.querySelector('.text-muted').appendChild(redirectLink);
+        }, 8000);
+    </script>
+</body>
+</html>
