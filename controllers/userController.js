@@ -216,3 +216,40 @@ exports.transferMoney = async (req, res) => {
         });
     }
 };
+
+// Add this method to your controller file
+exports.showAccount = async (req, res) => {
+    try {
+        // Get user from session
+        const userId = req.session.user.id;
+        
+        const user = await User.findById(userId)
+            .populate({
+                path: 'cards',
+                select: '-cvv -pin -__v'
+            })
+            .populate('preferences.defaultCard');
+
+        if (!user) {
+            req.session.destroy();
+            return res.redirect('/login');
+        }
+
+        // Get the primary card
+        const primaryCard = user.getPrimaryCard();
+        const balance = primaryCard ? primaryCard.balance : 0;
+
+        res.render('account', { 
+            user: {
+                ...user.toObject(),
+                email: req.session.user.email // Add email from session
+            },
+            balance,
+            primaryCard: primaryCard ? primaryCard.toObject() : null,
+            cards: user.cards // Pass all cards to the view
+        });
+    } catch (error) {
+        console.error(error);
+        res.redirect('/login');
+    }
+};

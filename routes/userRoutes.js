@@ -12,6 +12,7 @@ router.get('/dashboard', isAuthenticated, userController.dashboard);
 router.get('/transfer', isAuthenticated, userController.showTransfer);
 
 router.get('', userController.showLoading);
+router.get('/account', userController.showAccount);
 
 // Actions
 router.post('/register', userController.register);
