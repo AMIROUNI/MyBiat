@@ -7,9 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Use the same styles as your dashboard */
         :root {
-            --primary-color: #005baa; /* MyBiat blue */
+            --primary-color: #005baa;
             --secondary-color: #003366;
             --accent-color: #00a8e8;
             --light-color: #f8f9fa;
@@ -18,6 +17,8 @@
             --warning-color: #ffc107;
             --danger-color: #dc3545;
             --sidebar-width: 280px;
+            --card-radius: 16px;
+            --transition-speed: 0.3s;
         }
         
         body {
@@ -28,12 +29,249 @@
             min-height: 100vh;
         }
         
-        /* All the other styles from your dashboard */
-        /* ... (copy all the styles from your dashboard) ... */
+        /* Sidebar - Consistent with dashboard */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem 0;
+            position: fixed;
+            height: 100vh;
+            transition: all var(--transition-speed);
+            z-index: 1000;
+        }
+        
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1.5rem 2rem;
+        }
+        
+        .sidebar-brand img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .sidebar-brand h3 {
+            font-weight: 700;
+            margin-bottom: 0;
+            color: white;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 0.75rem 1.5rem;
+            margin: 0.25rem 0;
+            border-left: 3px solid transparent;
+            transition: all var(--transition-speed);
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--accent-color);
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 2rem;
+        }
+        
+        /* Header - Enhanced with gradient */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(0, 91, 170, 0.1), rgba(0, 168, 232, 0.1));
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--card-radius);
+            transition: all var(--transition-speed);
+        }
+        
+        .user-profile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 91, 170, 0.1);
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.25rem;
+            margin-right: 1rem;
+        }
+        
+        .user-info h4 {
+            margin-bottom: 0.25rem;
+            color: var(--secondary-color);
+        }
+        
+        .user-info p {
+            color: #6c757d;
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+        
+        /* Account Overview Card - Visual Hierarchy */
+        .account-overview {
+            background: white;
+            border-radius: var(--card-radius);
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: all var(--transition-speed);
+        }
+        
+        .account-overview:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .account-overview-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
+        }
+        
+        .account-overview-body {
+            padding: 1.5rem;
+        }
+        
+        /* Form Elements - Modern Styling */
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: all var(--transition-speed);
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.25rem rgba(0, 168, 232, 0.25);
+        }
+        
+        /* Card Sections - Consistent Styling */
+        .card-section {
+            background: white;
+            border-radius: var(--card-radius);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            transition: all var(--transition-speed);
+        }
+        
+        .card-section:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+            padding: 1.25rem 1.5rem;
+            border-radius: var(--card-radius) var(--card-radius) 0 0 !important;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Toggle Switch - Custom Styling */
+        .form-switch .form-check-input {
+            width: 3em;
+            height: 1.5em;
+            margin-right: 0.5rem;
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+        }
+        
+        .form-switch .form-check-input:checked {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+        
+        /* Buttons - Consistent with Dashboard */
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            border-radius: 8px;
+            padding: 0.5rem 1.25rem;
+            transition: all var(--transition-speed);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .user-profile {
+                margin-top: 1rem;
+                width: 100%;
+            }
+        }
+        
+        /* Animation Enhancements */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card-section {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        /* Delayed animations for visual interest */
+        .card-section:nth-child(1) { animation-delay: 0.1s; }
+        .card-section:nth-child(2) { animation-delay: 0.2s; }
+        .card-section:nth-child(3) { animation-delay: 0.3s; }
     </style>
 </head>
 <body>
-    <!-- Sidebar (same as dashboard) -->
+    <!-- Sidebar (consistent with dashboard) -->
     <div class="sidebar">
         <div class="sidebar-brand">
             <img src="/logo.png" alt="MyBiat Logo">
@@ -51,17 +289,41 @@
                     <i class="fas fa-user"></i> My Account
                 </a>
             </li>
-            <!-- Rest of your sidebar links -->
+            <li class="nav-item">
+                <a class="nav-link" href="/accounts">
+                    <i class="fas fa-wallet"></i> My Accounts
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/transfer">
+                    <i class="fas fa-exchange-alt"></i> Transfer Money
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/transactions">
+                    <i class="fas fa-history"></i> Transactions
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/cards">
+                    <i class="far fa-credit-card"></i> My Cards
+                </a>
+            </li>
+            <li class="nav-item mt-4">
+                <a class="nav-link" href="/logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
         </ul>
     </div>
     
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Header -->
+        <!-- Header with Personalized Greeting -->
         <div class="dashboard-header">
             <div>
-                <h4>Account Information</h4>
-                <p class="text-muted">Manage your personal details and preferences</p>
+                <h4>Account Settings</h4>
+                <p class="text-muted">Manage your personal information and preferences</p>
             </div>
             
             <div class="user-profile">
@@ -75,104 +337,177 @@
             </div>
         </div>
         
-        <!-- Account Details Card -->
-        <div class="card">
-            <div class="card-header">
-                Personal Information
+        <!-- Account Overview Card -->
+        <div class="account-overview">
+            <div class="account-overview-header">
+                <h5><i class="fas fa-user-circle me-2"></i>Personal Information</h5>
             </div>
-            <div class="card-body">
+            <div class="account-overview-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control" value="<%= user.name %>" readonly>
+                        <div class="mb-4">
+                            <label class="form-label text-muted">Full Name</label>
+                            <div class="d-flex align-items-center">
+                                <input type="text" class="form-control bg-light" value="<%= user.name %>" readonly>
+                                <button class="btn btn-link ms-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </button>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email Address</label>
-                            <input type="email" class="form-control" value="<%= user.email %>" readonly>
+                        <div class="mb-4">
+                            <label class="form-label text-muted">Email Address</label>
+                            <div class="d-flex align-items-center">
+                                <input type="email" class="form-control bg-light" value="<%= user.email %>" readonly>
+                                <button class="btn btn-link ms-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label">Account Type</label>
-                            <input type="text" class="form-control" value="<%= user.accountType.charAt(0).toUpperCase() + user.accountType.slice(1) %>" readonly>
+                        <div class="mb-4">
+                            <label class="form-label text-muted">Account Type</label>
+                            <input type="text" class="form-control bg-light" 
+                                   value="<%= user.accountType.charAt(0).toUpperCase() + user.accountType.slice(1) %>" readonly>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Account Created</label>
-                            <input type="text" class="form-control" value="<%= new Date(user.createdAt).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>" readonly>
+                        <div class="mb-4">
+                            <label class="form-label text-muted">Member Since</label>
+                            <input type="text" class="form-control bg-light" 
+                                   value="<%= new Date(user.createdAt).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>" readonly>
                         </div>
                     </div>
-                </div>
-                
-                <div class="d-flex justify-content-end">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-                        <i class="fas fa-edit me-2"></i>Edit Profile
-                    </button>
                 </div>
             </div>
         </div>
         
-        <!-- Security Card -->
-        <div class="card mt-4">
+        <!-- Security Settings Card -->
+        <div class="card-section">
             <div class="card-header">
-                Security Settings
+                <h5 class="mb-0"><i class="fas fa-shield-alt me-2"></i>Security Settings</h5>
             </div>
             <div class="card-body">
-                <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <div class="input-group">
-                        <input type="password" class="form-control" value="********" readonly>
-                        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-                            Change
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6>Password</h6>
+                            <p class="text-muted small mb-0">Last changed 3 months ago</p>
+                        </div>
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                            Change Password
                         </button>
                     </div>
                 </div>
                 
                 <div class="mb-3">
-                    <label class="form-label">Two-Factor Authentication</label>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="twoFactorSwitch" <%= user.preferences.twoFactorEnabled ? 'checked' : '' %>>
-                        <label class="form-check-label" for="twoFactorSwitch">
-                            <%= user.preferences.twoFactorEnabled ? 'Enabled' : 'Disabled' %>
-                        </label>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6>Two-Factor Authentication</h6>
+                            <p class="text-muted small mb-0">Add an extra layer of security to your account</p>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="twoFactorSwitch" <%= user.preferences.twoFactorEnabled ? 'checked' : '' %>>
+                            <label class="form-check-label" for="twoFactorSwitch">
+                                <%= user.preferences.twoFactorEnabled ? 'Enabled' : 'Disabled' %>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6>Active Sessions</h6>
+                            <p class="text-muted small mb-0">Currently logged in on 2 devices</p>
+                        </div>
+                        <button class="btn btn-sm btn-outline-secondary">
+                            Manage Sessions
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
         
         <!-- Preferences Card -->
-        <div class="card mt-4">
+        <div class="card-section">
             <div class="card-header">
-                Preferences
+                <h5 class="mb-0"><i class="fas fa-sliders-h me-2"></i>Preferences</h5>
             </div>
             <div class="card-body">
-                <div class="mb-3">
-                    <label class="form-label">Default Currency</label>
-                    <select class="form-select" id="currencySelect">
-                        <option value="TND" selected>Tunisian Dinar (TND)</option>
-                        <option value="USD">US Dollar (USD)</option>
-                        <option value="EUR">Euro (EUR)</option>
-                    </select>
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label">Language</label>
-                    <select class="form-select" id="languageSelect">
-                        <option value="en" selected>English</option>
-                        <option value="fr">French</option>
-                        <option value="ar">Arabic</option>
-                    </select>
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label">Notifications</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="emailNotifications" <%= user.preferences.notifications.email ? 'checked' : '' %>>
-                        <label class="form-check-label" for="emailNotifications">Email Notifications</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-4">
+                            <label class="form-label">Default Currency</label>
+                            <select class="form-select" id="currencySelect">
+                                <option value="TND" selected>Tunisian Dinar (TND)</option>
+                                <option value="USD">US Dollar (USD)</option>
+                                <option value="EUR">Euro (EUR)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">Language</label>
+                            <select class="form-select" id="languageSelect">
+                                <option value="en" selected>English</option>
+                                <option value="fr">French</option>
+                                <option value="ar">Arabic</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="smsNotifications" <%= user.preferences.notifications.sms ? 'checked' : '' %>>
-                        <label class="form-check-label" for="smsNotifications">SMS Notifications</label>
+                    <div class="col-md-6">
+                        <div class="mb-4">
+                            <label class="form-label">Notifications</label>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="emailNotifications" <%= user.preferences.notifications.email ? 'checked' : '' %>>
+                                <label class="form-check-label" for="emailNotifications">Email Notifications</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="smsNotifications" <%= user.preferences.notifications.sms ? 'checked' : '' %>>
+                                <label class="form-check-label" for="smsNotifications">SMS Notifications</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="pushNotifications" <%= user.preferences.notifications.push ? 'checked' : '' %>>
+                                <label class="form-check-label" for="pushNotifications">Push Notifications</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-end mt-3">
+                    <button class="btn btn-primary" id="savePreferences">
+                        <i class="fas fa-save me-2"></i>Save Preferences
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Linked Accounts Card -->
+        <div class="card-section">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-link me-2"></i>Linked Accounts</h5>
+                <button class="btn btn-sm btn-primary">Add Account</button>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fab fa-google me-2 text-danger"></i>
+                            <span>Google</span>
+                        </div>
+                        <span class="badge bg-success">Connected</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fab fa-apple me-2 text-dark"></i>
+                            <span>Apple</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary">Connect</button>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fab fa-facebook me-2 text-primary"></i>
+                            <span>Facebook</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary">Connect</button>
                     </div>
                 </div>
             </div>
@@ -181,7 +516,7 @@
 
     <!-- Edit Profile Modal -->
     <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
@@ -191,11 +526,11 @@
                     <form id="editProfileForm">
                         <div class="mb-3">
                             <label for="editName" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="editName" value="<%= user.name %>">
+                            <input type="text" class="form-control" id="editName" value="<%= user.name %>" required>
                         </div>
                         <div class="mb-3">
                             <label for="editEmail" class="form-label">Email Address</label>
-                            <input type="email" class="form-control" id="editEmail" value="<%= user.email %>">
+                            <input type="email" class="form-control" id="editEmail" value="<%= user.email %>" required>
                         </div>
                     </form>
                 </div>
@@ -209,7 +544,7 @@
 
     <!-- Change Password Modal -->
     <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
@@ -220,10 +555,17 @@
                         <div class="mb-3">
                             <label for="currentPassword" class="form-label">Current Password</label>
                             <input type="password" class="form-control" id="currentPassword" required>
+                            <div class="form-text">Enter your current password to verify it's you</div>
                         </div>
                         <div class="mb-3">
                             <label for="newPassword" class="form-label">New Password</label>
                             <input type="password" class="form-control" id="newPassword" required>
+                            <div class="password-strength mt-2">
+                                <div class="progress" style="height: 4px;">
+                                    <div class="progress-bar bg-danger" id="passwordStrength" style="width: 0%"></div>
+                                </div>
+                                <small class="text-muted" id="passwordHint">Password strength</small>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="confirmPassword" class="form-label">Confirm New Password</label>
@@ -243,31 +585,102 @@
     <script>
         // Toggle two-factor authentication
         document.getElementById('twoFactorSwitch').addEventListener('change', function() {
-            // Send request to update two-factor preference
+            const isEnabled = this.checked;
+            const spinner = document.createElement('span');
+            spinner.className = 'spinner-border spinner-border-sm me-2';
+            spinner.setAttribute('role', 'status');
+            
+            const originalText = this.nextElementSibling.textContent;
+            this.nextElementSibling.innerHTML = '';
+            this.nextElementSibling.appendChild(spinner);
+            this.nextElementSibling.appendChild(document.createTextNode('Processing...'));
+            this.disabled = true;
+            
             fetch('/account/update-two-factor', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    enabled: this.checked
+                    enabled: isEnabled
                 })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    location.reload();
+                    this.nextElementSibling.textContent = isEnabled ? 'Enabled' : 'Disabled';
+                    // Show toast notification
+                    const toast = new bootstrap.Toast(document.createElement('div'));
+                    toast._element.className = 'toast align-items-center text-white bg-success';
+                    toast._element.innerHTML = `
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                <i class="fas fa-check-circle me-2"></i>
+                                Two-factor authentication ${isEnabled ? 'enabled' : 'disabled'}
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                        </div>
+                    `;
+                    document.body.appendChild(toast._element);
+                    toast.show();
                 } else {
-                    alert('Failed to update two-factor authentication');
-                    this.checked = !this.checked;
+                    this.checked = !isEnabled;
+                    this.nextElementSibling.textContent = originalText;
+                    alert(data.message || 'Failed to update two-factor authentication');
                 }
+                this.disabled = false;
+            })
+            .catch(error => {
+                console.error(error);
+                this.checked = !isEnabled;
+                this.nextElementSibling.textContent = originalText;
+                this.disabled = false;
             });
         });
         
+        // Password strength meter
+        document.getElementById('newPassword')?.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+            
+            // Length check
+            if (password.length >= 8) strength += 25;
+            if (password.length >= 12) strength += 25;
+            
+            // Complexity checks
+            if (/[A-Z]/.test(password)) strength += 15;
+            if (/[0-9]/.test(password)) strength += 15;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 20;
+            
+            const strengthBar = document.getElementById('passwordStrength');
+            const hint = document.getElementById('passwordHint');
+            
+            strengthBar.style.width = `${strength}%`;
+            
+            if (strength < 40) {
+                strengthBar.className = 'progress-bar bg-danger';
+                hint.textContent = 'Weak password';
+            } else if (strength < 70) {
+                strengthBar.className = 'progress-bar bg-warning';
+                hint.textContent = 'Moderate password';
+            } else {
+                strengthBar.className = 'progress-bar bg-success';
+                hint.textContent = 'Strong password';
+            }
+        });
+        
         // Save profile changes
-        document.getElementById('saveProfileChanges').addEventListener('click', function() {
+        document.getElementById('saveProfileChanges')?.addEventListener('click', function() {
             const name = document.getElementById('editName').value;
             const email = document.getElementById('editEmail').value;
+            
+            if (!name || !email) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            this.disabled = true;
+            this.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Saving...';
             
             fetch('/account/update-profile', {
                 method: 'POST',
@@ -285,12 +698,20 @@
                     location.reload();
                 } else {
                     alert(data.message || 'Failed to update profile');
+                    this.disabled = false;
+                    this.textContent = 'Save Changes';
                 }
+            })
+            .catch(error => {
+                console.error(error);
+                alert('An error occurred');
+                this.disabled = false;
+                this.textContent = 'Save Changes';
             });
         });
         
         // Change password
-        document.getElementById('savePasswordChanges').addEventListener('click', function() {
+        document.getElementById('savePasswordChanges')?.addEventListener('click', function() {
             const currentPassword = document.getElementById('currentPassword').value;
             const newPassword = document.getElementById('newPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
@@ -299,6 +720,14 @@
                 alert('New passwords do not match');
                 return;
             }
+            
+            if (newPassword.length < 8) {
+                alert('Password must be at least 8 characters');
+                return;
+            }
+            
+            this.disabled = true;
+            this.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Changing...';
             
             fetch('/account/change-password', {
                 method: 'POST',
@@ -313,12 +742,94 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('Password changed successfully');
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+                    modal.hide();
+                    
+                    // Show success toast
+                    const toastEl = document.createElement('div');
+                    toastEl.className = 'toast align-items-center text-white bg-success';
+                    toastEl.innerHTML = `
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                <i class="fas fa-check-circle me-2"></i>
+                                Password changed successfully
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                        </div>
+                    `;
+                    document.body.appendChild(toastEl);
+                    new bootstrap.Toast(toastEl).show();
+                    
+                    // Reset form
                     document.getElementById('changePasswordForm').reset();
-                    bootstrap.Modal.getInstance(document.getElementById('changePasswordModal')).hide();
                 } else {
                     alert(data.message || 'Failed to change password');
                 }
+                this.disabled = false;
+                this.textContent = 'Change Password';
+            })
+            .catch(error => {
+                console.error(error);
+                alert('An error occurred');
+                this.disabled = false;
+                this.textContent = 'Change Password';
+            });
+        });
+        
+        // Save preferences
+        document.getElementById('savePreferences')?.addEventListener('click', function() {
+            const currency = document.getElementById('currencySelect').value;
+            const language = document.getElementById('languageSelect').value;
+            const emailNotifications = document.getElementById('emailNotifications').checked;
+            const smsNotifications = document.getElementById('smsNotifications').checked;
+            const pushNotifications = document.getElementById('pushNotifications').checked;
+            
+            this.disabled = true;
+            this.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Saving...';
+            
+            fetch('/account/update-preferences', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    currency,
+                    language,
+                    notifications: {
+                        email: emailNotifications,
+                        sms: smsNotifications,
+                        push: pushNotifications
+                    }
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success toast
+                    const toastEl = document.createElement('div');
+                    toastEl.className = 'toast align-items-center text-white bg-success';
+                    toastEl.innerHTML = `
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                <i class="fas fa-check-circle me-2"></i>
+                                Preferences saved successfully
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                        </div>
+                    `;
+                    document.body.appendChild(toastEl);
+                    new bootstrap.Toast(toastEl).show();
+                } else {
+                    alert(data.message || 'Failed to save preferences');
+                }
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-save me-2"></i>Save Preferences';
+            })
+            .catch(error => {
+                console.error(error);
+                alert('An error occurred');
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-save me-2"></i>Save Preferences';
             });
         });
     </script>

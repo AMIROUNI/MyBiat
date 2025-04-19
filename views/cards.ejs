@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyBiat - My Cards</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #005baa;
+            --secondary-color: #003366;
+            --accent-color: #00a8e8;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --sidebar-width: 280px;
+            --card-radius: 16px;
+            --transition-speed: 0.3s;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar - Consistent with dashboard */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem 0;
+            position: fixed;
+            height: 100vh;
+            transition: all var(--transition-speed);
+            z-index: 1000;
+        }
+        
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1.5rem 2rem;
+        }
+        
+        .sidebar-brand img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .sidebar-brand h3 {
+            font-weight: 700;
+            margin-bottom: 0;
+            color: white;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 0.75rem 1.5rem;
+            margin: 0.25rem 0;
+            border-left: 3px solid transparent;
+            transition: all var(--transition-speed);
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--accent-color);
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 2rem;
+        }
+        
+        /* Header - Enhanced with gradient */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(0, 91, 170, 0.1), rgba(0, 168, 232, 0.1));
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--card-radius);
+            transition: all var(--transition-speed);
+        }
+        
+        .user-profile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 91, 170, 0.1);
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.25rem;
+            margin-right: 1rem;
+        }
+        
+        .user-info h4 {
+            margin-bottom: 0.25rem;
+            color: var(--secondary-color);
+        }
+        
+        .user-info p {
+            color: #6c757d;
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+        
+        /* Card Styles */
+        .bank-card {
+            border-radius: var(--card-radius);
+            padding: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-speed);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .bank-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .bank-card.virtual {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+        }
+        
+        .bank-card.physical {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+        }
+        
+        .bank-card.visa {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+        }
+        
+        .bank-card.mastercard {
+            background: linear-gradient(135deg, #f46b45, #eea849);
+        }
+        
+        .bank-card.classic {
+            background: linear-gradient(135deg, #005baa, #003366);
+        }
+        
+        .bank-card.premium {
+            background: linear-gradient(135deg, #8e2de2, #4a00e0);
+        }
+        
+        .bank-card.platinum {
+            background: linear-gradient(135deg, #434343, #000000);
+        }
+        
+        .card-logo {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2.5rem;
+            opacity: 0.8;
+        }
+        
+        .card-chip {
+            width: 40px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-chip i {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .card-number {
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .card-actions {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .card-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .default-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary-color);
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        /* Card List */
+        .card-item {
+            background: white;
+            border-radius: var(--card-radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all var(--transition-speed);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        
+        .card-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-item-title {
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-item-title i {
+            font-size: 1.5rem;
+            margin-right: 0.75rem;
+            color: var(--primary-color);
+        }
+        
+        .card-item-status {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+        
+        .status-inactive {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--danger-color);
+        }
+        
+        /* Add Card Modal */
+        .card-type-option {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+        }
+        
+        .card-type-option:hover {
+            border-color: var(--accent-color);
+            background: rgba(0, 168, 232, 0.05);
+        }
+        
+        .card-type-option.active {
+            border-color: var(--primary-color);
+            background: rgba(0, 91, 170, 0.05);
+        }
+        
+        .card-type-option i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .user-profile {
+                margin-top: 1rem;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <img src="/logo.png" alt="MyBiat Logo">
+            <h3>MyBiat</h3>
+        </div>
+        
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="/dashboard">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/account">
+                    <i class="fas fa-user"></i> My Account
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/accounts">
+                    <i class="fas fa-wallet"></i> My Accounts
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/cards">
+                    <i class="far fa-credit-card"></i> My Cards
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/transfer">
+                    <i class="fas fa-exchange-alt"></i> Transfer Money
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/transactions">
+                    <i class="fas fa-history"></i> Transactions
+                </a>
+            </li>
+            <li class="nav-item mt-4">
+                <a class="nav-link" href="/logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div>
+                <h4>My Cards</h4>
+                <p class="text-muted">Manage your payment cards</p>
+            </div>
+            
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <%= user.name.charAt(0).toUpperCase() %>
+                </div>
+                <div class="user-info">
+                    <h4><%= user.name %></h4>
+                    <p><%= cards.length %> cards</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cards Grid -->
+        <div class="row mb-4">
+            <% cards.forEach(card => { %>
+                <div class="col-md-6 col-lg-4">
+                    <div class="bank-card <%= card.cardType %> <%= card.cardBrand %>">
+                        <% if (card._id.equals(defaultCardId)) { %>
+                            <span class="default-badge">Default Card</span>
+                        <% } %>
+                        <div class="card-badge"><%= card.isVirtual ? 'Virtual' : 'Physical' %></div>
+                        <div class="card-logo">
+                            <i class="fab fa-cc-<%= card.cardType %>"></i>
+                        </div>
+                        <div class="card-chip">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <div class="card-number">
+                            <%= card.maskedCardNumber %>
+                        </div>
+                        <div class="card-details">
+                            <div>
+                                <small>Card Holder</small>
+                                <div><%= card.cardHolderName %></div>
+                            </div>
+                            <div>
+                                <small>Expires</small>
+                                <div><%= card.formattedExpiry %></div>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-light rounded-circle" 
+                                    onclick="toggleCardStatus('<%= card._id %>', <%= card.isActive %>)"
+                                    title="<%= card.isActive ? 'Block Card' : 'Activate Card' %>">
+                                <i class="fas fa-<%= card.isActive ? 'lock' : 'lock-open' %>"></i>
+                            </button>
+                            <% if (!card._id.equals(defaultCardId)) { %>
+                                <button class="btn btn-sm btn-light rounded-circle" 
+                                        onclick="setDefaultCard('<%= card._id %>')"
+                                        title="Set as Default">
+                                    <i class="fas fa-star"></i>
+                                </button>
+                            <% } %>
+                            <a href="/cards/<%= card._id %>" class="btn btn-sm btn-light rounded-circle" title="View Details">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+        
+        <!-- Cards List View -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Card Management</h5>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCardModal">
+                    <i class="fas fa-plus me-2"></i>Add New Card
+                </button>
+            </div>
+            <div class="card-body">
+                <% if (cards.length > 0) { %>
+                    <div class="list-group list-group-flush">
+                        <% cards.forEach(card => { %>
+                            <div class="list-group-item card-item">
+                                <div class="card-item-header">
+                                    <div class="card-item-title">
+                                        <i class="fab fa-cc-<%= card.cardType %>"></i>
+                                        <div>
+                                            <h6 class="mb-0"><%= card.cardBrand.toUpperCase() %> Card</h6>
+                                            <small class="text-muted"><%= card.maskedCardNumber %></small>
+                                        </div>
+                                    </div>
+                                    <span class="card-item-status <%= card.isActive ? 'status-active' : 'status-inactive' %>">
+                                        <%= card.isActive ? 'Active' : 'Blocked' %>
+                                    </span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-2">
+                                        <small class="text-muted">Card Holder</small>
+                                        <div><%= card.cardHolderName %></div>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <small class="text-muted">Expires</small>
+                                        <div><%= card.formattedExpiry %></div>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <small class="text-muted">Type</small>
+                                        <div><%= card.isVirtual ? 'Virtual' : 'Physical' %></div>
+                                    </div>
+                                    <div class="col-md-2 mb-2">
+                                        <small class="text-muted">Status</small>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" 
+                                                   id="statusSwitch<%= card._id %>" <%= card.isActive ? 'checked' : '' %>
+                                                   onchange="toggleCardStatus('<%= card._id %>', <%= card.isActive %>)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end mt-2">
+                                    <% if (card._id.equals(defaultCardId)) { %>
+                                        <span class="badge bg-primary me-2">Default Card</span>
+                                    <% } else { %>
+                                        <button class="btn btn-sm btn-outline-primary me-2" 
+                                                onclick="setDefaultCard('<%= card._id %>')">
+                                            Set as Default
+                                        </button>
+                                    <% } %>
+                                    <a href="/cards/<%= card._id %>" class="btn btn-sm btn-outline-secondary me-2">
+                                        <i class="fas fa-eye me-1"></i>Details
+                                    </a>
+                                    <button class="btn btn-sm btn-outline-danger" 
+                                            onclick="confirmDelete('<%= card._id %>')"
+                                            <%= card._id.equals(defaultCardId) ? 'disabled' : '' %>>
+                                        <i class="fas fa-trash me-1"></i>Delete
+                                    </button>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } else { %>
+                    <div class="text-center py-5">
+                        <i class="far fa-credit-card fa-4x text-muted mb-4"></i>
+                        <h5>No Cards Found</h5>
+                        <p class="text-muted">You don't have any cards yet. Add your first card to get started.</p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCardModal">
+                            <i class="fas fa-plus me-2"></i>Add New Card
+                        </button>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Card Modal -->
+    <div class="modal fade" id="addCardModal" tabindex="-1" aria-labelledby="addCardModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCardModalLabel">Add New Card</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCardForm">
+                        <div class="mb-4">
+                            <label class="form-label">Card Type</label>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="card-type-option" onclick="selectCardType('visa', this)">
+                                        <i class="fab fa-cc-visa"></i>
+                                        <div>Visa</div>
+                                        <input type="radio" name="cardType" value="visa" class="d-none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card-type-option" onclick="selectCardType('mastercard', this)">
+                                        <i class="fab fa-cc-mastercard"></i>
+                                        <div>Mastercard</div>
+                                        <input type="radio" name="cardType" value="mastercard" class="d-none">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">Card Brand</label>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="card-type-option" onclick="selectCardBrand('classic', this)">
+                                        <i class="fas fa-credit-card"></i>
+                                        <div>Classic</div>
+                                        <input type="radio" name="cardBrand" value="classic" class="d-none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card-type-option" onclick="selectCardBrand('premium', this)">
+                                        <i class="fas fa-gem"></i>
+                                        <div>Premium</div>
+                                        <input type="radio" name="cardBrand" value="premium" class="d-none">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card-type-option" onclick="selectCardBrand('platinum', this)">
+                                        <i class="fas fa-crown"></i>
+                                        <div>Platinum</div>
+                                        <input type="radio" name="cardBrand" value="platinum" class="d-none">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">Card Type</label>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="card-type-option" onclick="selectCardPhysicalType('physical', this)">
+                                        <i class="fas fa-credit-card"></i>
+                                        <div>Physical Card</div>
+                                        <input type="radio" name="isVirtual" value="false" class="d-none" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="card-type-option" onclick="selectCardPhysicalType('virtual', this)">
+                                        <i class="fas fa-mobile-alt"></i>
+                                        <div>Virtual Card</div>
+                                        <input type="radio" name="isVirtual" value="true" class="d-none">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Your new card will be ready for immediate use. A physical card will be delivered within 5-7 business days.
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="submitAddCard">
+                        <i class="fas fa-plus me-2"></i>Add Card
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this card? This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                        <i class="fas fa-trash me-2"></i>Delete Card
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Select card type in modal
+        function selectCardType(type, element) {
+            document.querySelectorAll('.card-type-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            element.classList.add('active');
+            document.querySelector(`input[name="cardType"][value="${type}"]`).checked = true;
+        }
+        
+        // Select card brand in modal
+        function selectCardBrand(brand, element) {
+            document.querySelectorAll('.card-type-option').forEach(opt => {
+                if (opt.parentElement.querySelector('input[name="cardBrand"]')) {
+                    opt.classList.remove('active');
+                }
+            });
+            element.classList.add('active');
+            document.querySelector(`input[name="cardBrand"][value="${brand}"]`).checked = true;
+        }
+        
+        // Select physical/virtual in modal
+        function selectCardPhysicalType(physicalType, element) {
+            document.querySelectorAll('.card-type-option').forEach(opt => {
+                if (opt.parentElement.querySelector('input[name="isVirtual"]')) {
+                    opt.classList.remove('active');
+                }
+            });
+            element.classList.add('active');
+            document.querySelector(`input[name="isVirtual"][value="${physicalType === 'virtual' ? 'true' : 'false'}"]`).checked = true;
+        }
+        
+        // Submit add card form
+        document.getElementById('submitAddCard').addEventListener('click', function() {
+            const form = document.getElementById('addCardForm');
+            const formData = new FormData(form);
+            
+            if (!formData.get('cardType') || !formData.get('cardBrand') || !formData.get('isVirtual')) {
+                alert('Please select all required options');
+                return;
+            }
+            
+            this.disabled = true;
+            this.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Adding...';
+            
+            fetch('/cards', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    cardType: formData.get('cardType'),
+                    cardBrand: formData.get('cardBrand'),
+                    isVirtual: formData.get('isVirtual')
+                })
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data && !data.success) {
+                    alert(data.message || 'Failed to add card');
+                    this.disabled = false;
+                    this.innerHTML = '<i class="fas fa-plus me-2"></i>Add Card';
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert('An error occurred');
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-plus me-2"></i>Add Card';
+            });
+        });
+        
+        // Toggle card status (active/blocked)
+        function toggleCardStatus(cardId, isActive) {
+            fetch(`/cards/${cardId}/status`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show toast notification
+                    const toastEl = document.createElement('div');
+                    toastEl.className = 'toast align-items-center text-white bg-success';
+                    toastEl.innerHTML = `
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                <i class="fas fa-check-circle me-2"></i>
+                                ${data.message}
+                            </div>
+                            <button type="button"
+
+                            
