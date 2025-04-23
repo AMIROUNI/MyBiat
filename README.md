@@ -54,7 +54,7 @@ Follow these steps to set up **MyBiat** locally:
 ### Steps
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/mybiat.git
+   git clone https://github.com/Amir EL_OUNI/mybiat.git
    cd mybiat
    ```
 
@@ -151,7 +151,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 ### Notes
-- Replace `https://github.com/yourusername/mybiat.git` with your actual repository URL if hosted on GitHub.
+- Replace `https://github.com/Amir EL_OUNI/mybiat.git` with your actual repository URL if hosted on GitHub.
 - If you don't have a `LICENSE` file, either create one or remove the License section.
 - Customize branding details (e.g., logo path, colors) to align with your application's design.
 - Update the Features and Usage sections if you add more functionality (e.g., APIs, new pages).
